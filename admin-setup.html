@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Setup Admin</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 3rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1 id="status">Creating admin account...</h1>
+  <script type="module">
+    import { auth, db } from './assets/js/firebase-config.js';
+    import { createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    async function setupAdmin() {
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, "admin@admin.com", "admin123");
+        await setDoc(doc(db, "users", cred.user.uid), {
+          name: "Super Admin",
+          email: "admin@admin.com",
+          role: "admin",
+          status: "approved",
+          createdAt: new Date().toISOString()
+        });
+        
+        await signOut(auth); // Sign out so they can log in normally on the main page
+        
+        document.getElementById('status').innerHTML = "✅ Admin Created Successfully!<br><br><small>Email: <b>admin@admin.com</b></small><br><small>Password: <b>admin123</b></small><br><br><a href='/' style='padding:10px 20px; background:blue; color:white; text-decoration:none; border-radius:5px;'>Go to Login Page</a>";
+      } catch (e) {
+        if (e.code === 'auth/email-already-in-use') {
+           document.getElementById('status').innerHTML = "⚠️ Admin account already exists!<br><br><small>Email: <b>admin@admin.com</b></small><br><small>Password: <b>admin123</b></small><br><br><a href='/' style='padding:10px 20px; background:blue; color:white; text-decoration:none; border-radius:5px;'>Go to Login Page</a>";
+        } else {
+           document.getElementById('status').innerHTML = "❌ Error: " + e.message;
+        }
+      }
+    }
+    setupAdmin();
+  </script>
+</body>
+</html>

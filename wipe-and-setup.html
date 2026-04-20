@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Factory Reset DB</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 3rem; max-width: 600px; margin: 0 auto; line-height: 1.6;}
+    .log { background: #f4f4f4; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.875rem; white-space: pre-wrap;}
+  </style>
+</head>
+<body>
+  <h1>Factory Resetting Database...</h1>
+  <p>This will permanently wipe all users, patients, and prescriptions from Firestore and set up exactly 1 Super Admin account.</p>
+  
+  <div class="log" id="log">Starting reset process...<br></div>
+  
+  <script type="module">
+    import { auth, db } from './assets/js/firebase-config.js';
+    import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { doc, setDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    function logAction(msg) {
+      document.getElementById('log').innerHTML += msg + "<br>";
+    }
+
+    async function wipeCollection(collectionName) {
+      logAction(`Scanning ${collectionName}...`);
+      const snap = await getDocs(collection(db, collectionName));
+      const deletePromises = [];
+      snap.forEach(d => {
+        deletePromises.push(deleteDoc(d.ref));
+      });
+      await Promise.all(deletePromises);
+      logAction(`✅ Wiped all ${snap.size} documents from ${collectionName}`);
+    }
+
+    async function factoryReset() {
+      try {
+        // 1. Wipe all data
+        await wipeCollection("users");
+        await wipeCollection("patients");
+        await wipeCollection("prescriptions");
+
+        logAction("<br>Setting up Admin Account...");
+        
+        let uid = null;
+        try {
+          const cred = await createUserWithEmailAndPassword(auth, "admin@admin.com", "admin123");
+          uid = cred.user.uid;
+          logAction("✅ Created new Auth identity.");
+        } catch (e) {
+          if (e.code === 'auth/email-already-in-use') {
+             logAction("⚠️ Auth identity already exists. Will re-provision database access.");
+             const cred = await signInWithEmailAndPassword(auth, "admin@admin.com", "admin123");
+             uid = cred.user.uid;
+          } else {
+             throw e;
+          }
+        }
+
+        // 2. Set Admin Document
+        await setDoc(doc(db, "users", uid), {
+          name: "Super Admin",
+          email: "admin@admin.com",
+          role: "admin",
+          status: "approved",
+          createdAt: new Date().toISOString()
+        });
+        
+        // 3. Clear session
+        await signOut(auth);
+
+        logAction("<br>🎉 <b>DATABASE RESET COMPLETE!</b>");
+        
+        document.body.innerHTML += `
+          <div style="margin-top: 2rem; border: 2px solid green; padding: 1rem; border-radius: 8px;">
+            <h2 style="margin-top:0;">Your Master Credentials</h2>
+            <p><b>Email:</b> admin@admin.com</p>
+            <p><b>Password:</b> admin123</p>
+            <a href="/" style='display:inline-block; margin-top:1rem; padding:10px 20px; background:blue; color:white; text-decoration:none; border-radius:5px;'>Go to Login Page</a>
+          </div>
+        `;
+        
+      } catch (err) {
+        logAction(`<br><span style="color:red">❌ Error: ${err.message}</span>`);
+      }
+    }
+    
+    // Execute
+    factoryReset();
+  </script>
+</body>
+</html>

@@ -6,6 +6,7 @@
   <title>Auooshadh | Admin Panel</title>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -17,10 +18,10 @@
       </div>
       <ul class="nav-menu">
         <li class="nav-item">
-          <a href="#" class="nav-link active">Dashboard</a>
+          <a href="#" class="nav-link active" id="nav-dash">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Doctors</a>
+          <a href="#" class="nav-link" id="nav-doctors">Doctors</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">Medicines DB</a>
@@ -38,22 +39,50 @@
       </header>
 
       <div class="admin-content">
-        <!-- Analytics -->
-        <h3 style="margin-bottom: 1rem;">System Overview</h3>
-        <div class="analytics-grid">
-          <div class="analytics-card">
-            <span class="analytics-title">Total Doctors</span>
-            <span class="analytics-value" id="stat-doctors">0</span>
+        
+        <!-- DASHBOARD AREA -->
+        <div id="area-dash">
+          <h3 style="margin-bottom: 1rem;">System Overview</h3>
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <span class="analytics-title">Total Doctors</span>
+              <span class="analytics-value" id="stat-doctors">0</span>
+            </div>
+            <div class="analytics-card">
+              <span class="analytics-title">Total Patients</span>
+              <span class="analytics-value" style="color: var(--primary-blue)" id="stat-patients">0</span>
+            </div>
+            <div class="analytics-card">
+              <span class="analytics-title">Total Prescriptions</span>
+              <span class="analytics-value" style="color: var(--status-safe)" id="stat-rx">0</span>
+            </div>
+            <div class="analytics-card">
+              <span class="analytics-title">Pending Approvals</span>
+              <span class="analytics-value" style="color: var(--status-warning)" id="stat-pending">0</span>
+            </div>
           </div>
-          <div class="analytics-card">
-            <span class="analytics-title">Pending Approvals</span>
-            <span class="analytics-value" style="color: var(--status-warning)" id="stat-pending">0</span>
-          </div>
-          <div class="analytics-card">
-            <span class="analytics-title">Total Prescriptions</span>
-            <span class="analytics-value" style="color: var(--status-safe)" id="stat-rx">0</span>
+          
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-top: 2rem;">
+            <!-- Main Chart -->
+            <div class="panel">
+              <div class="panel-header" style="margin-bottom: 1rem;">Activity Trends (Last 7 Days)</div>
+              <div style="height: 300px; width: 100%;">
+                <canvas id="activityChart"></canvas>
+              </div>
+            </div>
+            
+            <!-- Secondary Chart -->
+            <div class="panel">
+              <div class="panel-header" style="margin-bottom: 1rem;">Top Prescribed DB</div>
+              <div style="height: 300px; width: 100%; display: flex; align-items: center; justify-content: center;">
+                <canvas id="medicineChart"></canvas>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- DOCTORS AREA -->
+        <div id="area-doctors" style="display: none;">
 
         <!-- Create Doctor Section -->
         <div class="panel" style="margin-bottom: 2rem;">
@@ -94,6 +123,7 @@
             <tr><td colspan="5" style="text-align:center;">Loading doctors...</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </main>
   </div>
