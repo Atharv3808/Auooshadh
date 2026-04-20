@@ -140,9 +140,9 @@
 
     <div class="auth-right">
       <div class="auth-box card">
-        <div class="auth-tabs">
-          <div class="auth-tab active" id="tab-login">Login</div>
-          <div class="auth-tab" id="tab-signup">Register</div>
+        <div style="margin-bottom: 2rem;">
+          <h2 style="color: var(--primary-blue); margin-bottom: 0.5rem;">Welcome Back</h2>
+          <p class="text-muted" style="font-size: 0.875rem;">Secure Medical Professional Login</p>
         </div>
 
         <!-- Login Form -->
@@ -159,47 +159,12 @@
           <button type="submit" class="btn btn-primary btn-block">Sign In</button>
         </form>
 
-        <!-- Signup Form -->
-        <form id="form-signup" class="auth-form">
-          <div class="input-group">
-            <label for="signup-name">Full Name (Dr.)</label>
-            <input type="text" id="signup-name" required placeholder="Dr. John Doe">
-          </div>
-          <div class="input-group">
-            <label for="signup-email">Email Address</label>
-            <input type="email" id="signup-email" required placeholder="doctor@hospital.com">
-          </div>
-          <div class="input-group">
-            <label for="signup-license">Medical License ID</label>
-            <input type="text" id="signup-license" required placeholder="MED123456">
-          </div>
-          <div class="input-group">
-            <label for="signup-password">Password</label>
-            <input type="password" id="signup-password" required placeholder="••••••••" minlength="6">
-          </div>
-          <div id="signup-error" class="error-msg"></div>
-          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-        </form>
+
       </div>
     </div>
   </div>
 
   <script type="module" src="/assets/js/auth.js"></script>
-  <script>
-    // Tab switching logic
-    document.getElementById('tab-login').addEventListener('click', () => {
-      document.getElementById('tab-login').classList.add('active');
-      document.getElementById('tab-signup').classList.remove('active');
-      document.getElementById('form-login').classList.add('active');
-      document.getElementById('form-signup').classList.remove('active');
-    });
 
-    document.getElementById('tab-signup').addEventListener('click', () => {
-      document.getElementById('tab-signup').classList.add('active');
-      document.getElementById('tab-login').classList.remove('active');
-      document.getElementById('form-signup').classList.add('active');
-      document.getElementById('form-login').classList.remove('active');
-    });
-  </script>
 </body>
 </html>

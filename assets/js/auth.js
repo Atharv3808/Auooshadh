@@ -12,9 +12,7 @@ import {
 
 // DOM Elements
 const loginForm = document.getElementById('form-login');
-const signupForm = document.getElementById('form-signup');
 const loginError = document.getElementById('login-error');
-const signupError = document.getElementById('signup-error');
 
 // Handle Auth State Changes
 if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
@@ -54,11 +52,6 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
            btn.innerText = 'Sign In';
            btn.disabled = false;
         }
-        if (signupForm && signupForm.querySelector('button').disabled) {
-           const btn = signupForm.querySelector('button');
-           btn.innerText = 'Create Account';
-           btn.disabled = false;
-        }
       }
     }
   });
@@ -88,45 +81,6 @@ if (loginForm) {
   });
 }
 
-// Handle Signup
-if (signupForm) {
-  signupForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    signupError.style.display = 'none';
-    const name = document.getElementById('signup-name').value;
-    const email = document.getElementById('signup-email').value;
-    const license = document.getElementById('signup-license').value;
-    const password = document.getElementById('signup-password').value;
-    const btn = signupForm.querySelector('button');
-    const originalText = btn.innerText;
-
-    try {
-      btn.innerText = 'Creating Account...';
-      btn.disabled = true;
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      const isAdminAccount = email.toLowerCase().startsWith('admin');
-      
-      // Save additional info to Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        name: name,
-        email: email,
-        license: isAdminAccount ? "ADMIN-KEY" : license,
-        role: isAdminAccount ? "admin" : "doctor",
-        status: isAdminAccount ? "approved" : "pending", // Requires admin approval if doctor
-        createdAt: new Date().toISOString()
-      });
-
-      // Redirect will be handled by onAuthStateChanged
-    } catch (error) {
-      signupError.innerText = error.message;
-      signupError.style.display = 'block';
-      btn.disabled = false;
-      btn.innerText = originalText;
-    }
-  });
-}
 
 // Expose logout globally so any page can use it
 window.logout = function() {

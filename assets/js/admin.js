@@ -1,6 +1,7 @@
-import { auth, db } from './firebase-config.js';
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { doc, getDoc, collection, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { auth, db, firebaseConfig } from './firebase-config.js';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { doc, getDoc, collection, query, where, getDocs, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const doctorsTbody = document.getElementById('doctors-tbody');
 const statDocs = document.getElementById('stat-doctors');
@@ -93,5 +94,64 @@ window.revokeDoc = async function(id) {
   } catch (e) { alert("Error updating doctor: " + e.message); }
 }
 
+// Provision New Doctor Logic (Secondary App Workaround)
+const btnCreateDoctor = document.getElementById('btn-create-doctor');
+if (btnCreateDoctor) {
+  btnCreateDoctor.addEventListener('click', async () => {
+    const name = document.getElementById('new-doc-name').value.trim();
+    const email = document.getElementById('new-doc-email').value.trim();
+    const license = document.getElementById('new-doc-lic').value.trim();
+    const password = document.getElementById('new-doc-pass').value.trim();
+
+    if(!name || !email || !license || !password) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    const originalText = btnCreateDoctor.innerText;
+    btnCreateDoctor.innerText = "Provisioning...";
+    btnCreateDoctor.disabled = true;
+
+    try {
+      // 1. Initialize Secondary Auth Session
+      const secondaryApp = initializeApp(firebaseConfig, "Secondary" + Date.now());
+      const secondaryAuth = getAuth(secondaryApp);
+
+      // 2. Create User using Secondary Auth
+      const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+      const newUid = userCredential.user.uid;
+
+      // 3. Document provisioning using Primary DB (Admin privileges)
+      await setDoc(doc(db, "users", newUid), {
+        name: name,
+        email: email,
+        license: license,
+        role: "doctor",
+        status: "approved", // Automatically approved
+        createdAt: new Date().toISOString()
+      });
+
+      // 4. Clean up
+      await secondaryAuth.signOut();
+
+      // Reset UI
+      document.getElementById('new-doc-name').value = '';
+      document.getElementById('new-doc-email').value = '';
+      document.getElementById('new-doc-lic').value = '';
+      document.getElementById('new-doc-pass').value = '';
+
+      alert("Doctor account successfully provisioned!");
+      loadDoctors();
+    } catch(error) {
+      console.error("Error creating doctor:", error);
+      alert("Failed to provision doctor: " + error.message);
+    } finally {
+      btnCreateDoctor.innerText = originalText;
+      btnCreateDoctor.disabled = false;
+    }
+  });
+}
+
 // Mock Analytics
 document.getElementById('stat-rx').innerText = Math.floor(Math.random() * 500) + 120;
+

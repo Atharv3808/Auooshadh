@@ -55,9 +55,29 @@
           </div>
         </div>
 
+        <!-- Create Doctor Section -->
+        <div class="panel" style="margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem; color: var(--primary-blue);">Provision New Doctor Account</h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+            <div class="input-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <input type="text" id="new-doc-name" placeholder="Full Name (Dr. John Doe)">
+            </div>
+            <div class="input-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <input type="email" id="new-doc-email" placeholder="doctor@hospital.com">
+            </div>
+            <div class="input-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <input type="text" id="new-doc-lic" placeholder="Medical License">
+            </div>
+            <div class="input-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <input type="password" id="new-doc-pass" placeholder="Initial Password">
+            </div>
+          </div>
+          <button id="btn-create-doctor" class="btn btn-primary">Create Doctor Profile</button>
+        </div>
+
         <!-- Doctors Table -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h3>Doctor Management</h3>
+          <h3>Doctor Management (Directory)</h3>
         </div>
         
         <table class="data-table">
