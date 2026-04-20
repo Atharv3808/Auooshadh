@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auooshadh | Admin Panel</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" style="width: 250px;">
+      <div class="sidebar-header">
+        <h2>Auooshadh <span style="font-size:0.875rem;color:var(--text-muted)">Admin</span></h2>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#" class="nav-link active">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Doctors</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Medicines DB</a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <button id="btn-logout" class="btn btn-outline" style="width: 100%;">Logout</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <h3 id="admin-name">Admin Portal</h3>
+        <span class="badge badge-safe">System Online</span>
+      </header>
+
+      <div class="admin-content">
+        <!-- Analytics -->
+        <h3 style="margin-bottom: 1rem;">System Overview</h3>
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <span class="analytics-title">Total Doctors</span>
+            <span class="analytics-value" id="stat-doctors">0</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-title">Pending Approvals</span>
+            <span class="analytics-value" style="color: var(--status-warning)" id="stat-pending">0</span>
+          </div>
+          <div class="analytics-card">
+            <span class="analytics-title">Total Prescriptions</span>
+            <span class="analytics-value" style="color: var(--status-safe)" id="stat-rx">0</span>
+          </div>
+        </div>
+
+        <!-- Doctors Table -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3>Doctor Management</h3>
+        </div>
+        
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Doctor Name</th>
+              <th>Email</th>
+              <th>License No.</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="doctors-tbody">
+            <tr><td colspan="5" style="text-align:center;">Loading doctors...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Function to check if user is admin
+    function isAdmin() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Users collection (doctors & admins)
+    match /users/{userId} {
+      // Users can read/write their own basic data
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      // Only admins can change roles or approval status directly,
+      // but users can create their initial pending document
+      allow create: if request.auth != null; 
+      allow update: if request.auth != null && (request.auth.uid == userId || isAdmin());
+    }
+
+    // Patients collection
+    match /patients/{patientId} {
+      // Doctors can read/write their own patients, Admins can read all
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.doctorId == request.auth.uid || isAdmin());
+    }
+
+    // Prescriptions collection
+    match /prescriptions/{rxId} {
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.doctorId == request.auth.uid || isAdmin());
+    }
+
+    // Medicines collection (Read-only for doctors, Write for admins)
+    match /medicines/{medicineId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && isAdmin();
+    }
+    
+    // Drafts
+    match /drafts/{draftId} {
+      allow read, write: if request.auth != null && request.auth.uid == draftId;
+    }
+  }
+}

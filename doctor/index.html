@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auooshadh | Doctor Workspace</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/doctor.css">
+  <link rel="stylesheet" href="/assets/css/print.css" media="print">
+</head>
+<body>
+
+  <div class="doctor-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Auooshadh</h2>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#" class="nav-link active" id="nav-workspace">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            &nbsp; Workspace
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" id="nav-patients">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            &nbsp; Patients
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" id="nav-history">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            &nbsp; History
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" id="nav-settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            &nbsp; Settings
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <button id="btn-logout" class="btn btn-outline" style="width: 100%;">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="doctor-profile">
+          <div style="width: 35px; height: 35px; background: var(--primary-blue-light); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;" id="doc-initials">DR</div>
+          <span style="font-weight: 500;" id="doc-name">Loading Profile...</span>
+        </div>
+        <div>
+          <span id="doc-status" class="badge badge-warning">Checking Status...</span>
+        </div>
+      </header>
+
+      <!-- Workspace Area -->
+      <div class="workspace" id="workspace-area" style="display: none;">
+        <!-- Left: Builder -->
+        <div class="builder-column">
+          <!-- Patient Panel -->
+          <div class="panel">
+            <div class="panel-header">
+              Patient Details
+              <button id="btn-show-add-patient" class="btn btn-sm btn-outline" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">+ New Patient</button>
+            </div>
+            
+            <div id="search-pat-wrapper" class="input-group search-container">
+              <input type="text" id="patient-search" placeholder="Search patient by name or phone (e.g. John, 9876543210)">
+              <div id="patient-dropdown" class="search-dropdown"></div>
+            </div>
+
+            <div id="patient-snapshot" style="display: none; background: var(--bg-color); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 1rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <strong id="snap-name">Name</strong>
+                <span id="snap-age-gender" class="text-muted">Age / Gender</span>
+              </div>
+              <div style="font-size: 0.875rem;">
+                <p><strong>Phone:</strong> <span id="snap-phone"></span></p>
+                <p><strong>Conditions:</strong> <span id="snap-conditions" style="color: var(--status-warning);"></span></p>
+              </div>
+            </div>
+            
+            <!-- Proper Manual Entry Form -->
+            <div id="manual-patient" style="display: none; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+              <h4 style="margin-bottom: 1rem; color: var(--primary-blue);">Register New Patient</h4>
+              <div class="input-group">
+                <label>Full Name *</label>
+                <input type="text" id="new-pat-name" placeholder="E.g. Jane Doe">
+              </div>
+              <div style="display: flex; gap: 1rem;">
+                <div class="input-group" style="flex: 1;">
+                  <label>Age *</label>
+                  <input type="number" id="new-pat-age" placeholder="Years">
+                </div>
+                <div class="input-group" style="flex: 1;">
+                  <label>Gender *</label>
+                  <select id="new-pat-gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group">
+                <label>Phone Number</label>
+                <input type="text" id="new-pat-phone" placeholder="10-digit number">
+              </div>
+              <div class="input-group">
+                <label>Known Conditions</label>
+                <input type="text" id="new-pat-conditions" placeholder="E.g. Diabetes, Hypertension, None">
+              </div>
+              <div style="display: flex; gap: 1rem;">
+                <button id="btn-set-patient" class="btn btn-primary" style="flex: 1;">Save to Database</button>
+                <button id="btn-cancel-add" class="btn btn-outline" style="flex: 1;">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medicament / Rx Panel -->
+          <div class="panel">
+            <div class="panel-header">Prescription Builder</div>
+            
+            <div class="input-group search-container">
+              <input type="text" id="medicine-search" placeholder="Search medicine by name, disease...">
+              <div id="medicine-dropdown" class="search-dropdown"></div>
+            </div>
+
+            <!-- Smart Alert Banner -->
+            <div id="smart-alert" class="card" style="display: none; background: var(--status-critical-bg); border-color: var(--status-critical); margin-bottom: 1rem; padding: 0.5rem 1rem;">
+              <strong style="color: var(--status-critical); font-size: 0.875rem;" id="alert-text">Interaction Alert!</strong>
+            </div>
+
+            <table class="medicine-table" id="rx-table">
+              <thead>
+                <tr>
+                  <th style="width: 30%;">Medicine</th>
+                  <th style="width: 20%;">Dosage</th>
+                  <th style="width: 15%;">Freq/Time</th>
+                  <th style="width: 15%;">Duration</th>
+                  <th style="width: 20%;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="rx-tbody">
+                <!-- Dynamic Rows Go Here -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div style="display: flex; gap: 1rem;">
+             <button id="btn-save-draft" class="btn btn-outline" style="flex: 1;">Save Draft</button>
+             <button id="btn-clear-rx" class="btn " style="flex: 1; border: 1px solid var(--border-color);">Clear</button>
+          </div>
+        </div>
+
+        <!-- Right: Live Preview -->
+        <div class="preview-column">
+          <div class="prescription-preview" id="print-area">
+            <div class="preview-header">
+              <h1 id="prev-clinic-name">AUOOSHADH CLINIC</h1>
+              <p id="prev-clinic-address" style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0;">123 Medical Park, Health City</p>
+              <p id="prev-clinic-phone" style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0;">Phone: ---</p>
+            </div>
+            
+            <div class="preview-patient-info">
+              <div>
+                <strong>Patient:</strong> <span id="prev-pat-name">__________</span><br>
+                <strong>Age/Sex:</strong> <span id="prev-pat-age">__</span> / <span id="prev-pat-gender">_</span>
+              </div>
+              <div style="text-align: right;">
+                <strong>Date:</strong> <span id="prev-date">__________</span><br>
+                <strong>Dr:</strong> <span id="prev-doc-name">__________</span>
+              </div>
+            </div>
+            
+            <div class="rx-symbol">Rx</div>
+            
+            <div class="preview-medicines" id="prev-medicines-list">
+              <!-- Rendered medicines -->
+              <p style="color: var(--text-muted); font-style: italic; font-size: 0.875rem;">Add medicines to see preview...</p>
+            </div>
+            
+            <div class="preview-footer">
+              <div style="font-size: 0.75rem; color: var(--text-muted); width: 60%;">
+                This prescription is electronically generated.
+                Valid only for 3 months from the date of issue.
+              </div>
+              <div style="text-align: center; display: flex; flex-direction: column; align-items: center;" id="prev-signature-box">
+                <img id="prev-signature-img" src="" style="display: none; max-height: 40px; margin-bottom: 0.25rem;">
+                <div id="prev-signature-line" style="border-bottom: 1px solid var(--text-dark); width: 120px; margin-bottom: 0.25rem;"></div>
+                <small>Doctor's Signature</small>
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button id="btn-print" class="btn btn-primary" style="flex: 1;">Print / Download</button>
+            <button id="btn-share-wa" class="btn" style="flex: 1; background: #25D366; color: white;">WhatsApp</button>
+            <button id="btn-finalize" class="btn btn-outline" style="flex: 1; border-color: var(--status-safe); color: var(--status-safe);">Finalize & Save</button>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Patients Area -->
+      <div id="patients-area" style="display: none; padding: var(--spacing-xl);">
+        <div class="panel">
+           <div class="panel-header">Patient Directory</div>
+           <table class="data-table" style="width: 100%;">
+             <thead>
+               <tr>
+                 <th>Name</th>
+                 <th>Age / Gender</th>
+                 <th>Phone</th>
+                 <th>Conditions</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+             <tbody id="patients-tbody">
+               <tr><td colspan="5" style="text-align: center;">Loading patients...</td></tr>
+             </tbody>
+           </table>
+        </div>
+      </div>
+
+      <!-- History Area -->
+      <div id="history-area" style="display: none; padding: var(--spacing-xl);">
+        <div class="panel">
+           <div class="panel-header">Prescription History</div>
+           <table class="data-table" style="width: 100%;">
+             <thead>
+               <tr>
+                 <th>Date</th>
+                 <th>Patient Name</th>
+                 <th>Medicines Prescribed</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+             <tbody id="history-tbody">
+               <tr><td colspan="4" style="text-align: center;">Loading history...</td></tr>
+             </tbody>
+           </table>
+        </div>
+      </div>
+      
+      <!-- Settings Area -->
+      <div id="settings-area" style="display: none; padding: var(--spacing-xl); max-width: 800px; margin: 0 auto;">
+        <div class="panel">
+           <div class="panel-header">Clinic Profile Settings</div>
+           <p class="text-muted" style="margin-bottom: 1.5rem;">Update your clinic details and upload a digital signature to instantly personalize your printed prescriptions.</p>
+           
+           <div class="input-group">
+             <label>Clinic / Hospital Name</label>
+             <input type="text" id="set-clinic-name" placeholder="E.g. City General Hospital">
+           </div>
+           
+           <div class="input-group">
+             <label>Clinic Address</label>
+             <input type="text" id="set-clinic-address" placeholder="E.g. 123 Medical Park, Health City">
+           </div>
+           
+           <div class="input-group">
+             <label>Clinic Phone Number</label>
+             <input type="text" id="set-clinic-phone" placeholder="E.g. 9876543210">
+           </div>
+           
+           <div class="input-group" style="margin-top: 1.5rem;">
+             <label>Digital Signature Image</label>
+             <div style="display: flex; gap: 1rem; align-items: flex-end;">
+               <input type="file" id="set-signature-file" accept="image/png, image/jpeg" style="flex: 1; padding: 0.5rem; background: var(--bg-color);">
+               
+               <div class="card" style="width: 150px; height: 80px; display: flex; align-items: center; justify-content: center; padding: 0.5rem;">
+                 <img id="set-signature-preview" src="" style="display: none; max-width: 100%; max-height: 100%;">
+                 <span id="set-signature-placeholder" class="text-muted" style="font-size: 0.75rem;">No image</span>
+               </div>
+             </div>
+             <small class="text-muted" style="margin-top: 0.5rem;">Accepted formats: PNG, JPG. We automatically compress this to save space.</small>
+           </div>
+           
+           <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+           
+           <div style="text-align: right;">
+             <button id="btn-save-settings" class="btn btn-primary">Save Profile Settings</button>
+           </div>
+        </div>
+      </div>
+      
+      <!-- Pending Access Message -->
+      <div id="pending-area" style="display: none; padding: 4rem; text-align: center;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--status-warning)" stroke-width="2" style="margin-bottom: 1rem;">
+          <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <h2 style="margin-bottom: 1rem;">Account Pending Approval</h2>
+        <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto;">Your doctor account has been created successfully and is currently under review by an administrator. You will gain access to the workspace once approved.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script type="module" src="/assets/js/doctor.js"></script>
+  <script type="module" src="/assets/js/prescription.js"></script>
+</body>
+</html>
